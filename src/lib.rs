@@ -14,7 +14,7 @@ extern "C" fn checkasm_fail_func(_fmt: *const c_char) -> i32 {
 /// pass the function to check as first argument followed by the function arguments.
 #[macro_export]
 macro_rules! declare_fn {
-    ($fun:ident $($name:ident : $ty:ty),+) => {
+    ($fun:ident ($($name:ident : $ty:ty),+)) => {
         cfg_if::cfg_if! {
             if #[cfg(target_arch="x86_64")] {
                 fn $fun(func: *mut std::ffi::c_void, $($name: $ty),+) {

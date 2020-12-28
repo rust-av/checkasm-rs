@@ -1,8 +1,8 @@
 use checkasm::declare_fn;
 use std::ffi::c_void;
 
-declare_fn!(check_one a:i32);
-declare_fn!(check_two a:i32, b:i32);
+declare_fn! { check_one(a:i32) }
+declare_fn! { check_two(a:i32, b:i32) }
 
 #[test]
 fn declare() {
