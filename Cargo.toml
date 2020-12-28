@@ -1,0 +1,14 @@
+[package]
+name = "checkasm"
+version = "0.1.0"
+authors = ["Luca Barbato <lu_zero@gentoo.org>"]
+edition = "2018"
+license = "BSD-2-Clause"
+
+[dependencies]
+cfg-if = "1"
+
+[build-dependencies]
+nasm-rs = "0.2.0"
+cc = "1"
+
