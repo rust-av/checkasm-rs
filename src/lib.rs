@@ -3,10 +3,11 @@
 use std::os::raw::c_char;
 
 // TODO replace with the variadic when it is stable
+// TODO make it return a different value depending on what is the error
 #[no_mangle]
 extern "C" fn checkasm_fail_func(_fmt: *const c_char) -> i32 {
     eprintln!("checkasm failed");
-    0
+    1
 }
 
 /// declare a function checker with the correct arguments
@@ -21,7 +22,7 @@ macro_rules! declare_fn {
                     const CLOB: u64 = 0xdeadbeefdeadbeef;
 
                     extern "C" {
-                        fn checkasm_checked_call(func: *mut c_void, ...);
+                        fn checkasm_checked_call(func: *mut c_void, ...) -> i32;
                         fn checkasm_stack_clobber(clobber: u64, ...);
                     }
 
@@ -30,14 +31,15 @@ macro_rules! declare_fn {
                                                CLOB, CLOB, CLOB, CLOB, CLOB, CLOB, CLOB,
                                                CLOB, CLOB, CLOB, CLOB, CLOB, CLOB, CLOB);
                         #[cfg(target_os="windows")] {
-                            checkasm_checked_call(func, 0, 0, 0, 0, 0, $($name),+,
-                                                  11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0);
+                            let r = checkasm_checked_call(func, 0, 0, 0, 0, 0, $($name),+,
+                                                          11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0);
+                            assert_eq!(r, 0);
                         }
                         #[cfg(not(target_os="windows"))] {
-                            checkasm_checked_call(func, 0, 0, 0, 0, 0, $($name),+,
-                                                  9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0);
+                            let r = checkasm_checked_call(func, 0, 0, 0, 0, 0, $($name),+,
+                                                          9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0);
+                            assert_eq!(r, 0);
                         }
-
                     }
                 }
             } else if #[cfg(target_arch="aarch64")] {
@@ -45,7 +47,7 @@ macro_rules! declare_fn {
                     const CLOB: u64 = 0xdeadbeefdeadbeef;
 
                     extern "C" {
-                        fn checkasm_checked_call(func: *mut c_void, ...);
+                        fn checkasm_checked_call(func: *mut c_void, ...) -> i32;
                         fn checkasm_stack_clobber(clobber: u64, ...);
                     }
 
@@ -54,8 +56,9 @@ macro_rules! declare_fn {
                                                CLOB, CLOB, CLOB, CLOB, CLOB, CLOB,
                                                CLOB, CLOB, CLOB, CLOB, CLOB, CLOB,
                                                CLOB, CLOB, CLOB, CLOB, CLOB);
-                        checkasm_checked_call(func, 0, 0, 0, 0, 0, 0, 0, $($name),+,
-                                              7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0);
+                        let r = checkasm_checked_call(func, 0, 0, 0, 0, 0, 0, 0, $($name),+,
+                                                      7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0);
+                        assert_eq!(r, 0);
                     }
                 }
             } else {

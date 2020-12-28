@@ -188,6 +188,7 @@ cglobal checked_call, 2, 15, 16, max_args*8+64+8
 %endrep
     xor  r8, [stack_param+(r9+7)*8]
     or   r4, r8
+    xor rax, rax
     jz .ok
     add  r0, errmsg_stack-errmsg_reg
 .fail:
@@ -198,7 +199,7 @@ cglobal checked_call, 2, 15, 16, max_args*8+64+8
     xor eax, eax
     call fail_func
     mov rdx, r10
-    mov rax, r9
+    mov rax, 1
 .ok:
     RET
 
@@ -271,6 +272,7 @@ cglobal checked_call, 1, 7
     inc  r3
     jl .check_canary
     test r4, r4
+    xor eax, eax
     jz .ok
     add  r1, errmsg_stack-errmsg_reg
 .fail:
@@ -279,7 +281,7 @@ cglobal checked_call, 1, 7
     mov [esp], r1
     call fail_func
     mov edx, r4
-    mov eax, r3
+    mov eax, 1
 .ok:
     add esp, 27*4
     RET

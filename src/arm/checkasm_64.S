@@ -183,6 +183,7 @@ function checked_call, export=1
         check_reg       x25, x26
         check_reg       x27, x28
 
+        mov             x0,  #0
         cbz             x3,  0f
 
         movrel          x0, error_message_register
@@ -196,7 +197,7 @@ function checked_call, export=1
         bl              checkasm_fail_func
 #endif
 0:
-        ldp             x0,  x1,  [sp], #16
+        ldp             x27,  x1, [sp], #16
         ldp             d14, d15, [sp], #16
         ldp             d12, d13, [sp], #16
         ldp             d10, d11, [sp], #16
