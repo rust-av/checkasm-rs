@@ -54,7 +54,7 @@ macro_rules! declare_fn {
                                                CLOB, CLOB, CLOB, CLOB, CLOB, CLOB,
                                                CLOB, CLOB, CLOB, CLOB, CLOB, CLOB,
                                                CLOB, CLOB, CLOB, CLOB, CLOB);
-                        checkasm_checked_call(func, 0, 0, 0, 0, 0, $($name),+,
+                        checkasm_checked_call(func, 0, 0, 0, 0, 0, 0, 0, $($name),+,
                                               7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0);
                     }
                 }
