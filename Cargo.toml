@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["Luca Barbato <lu_zero@gentoo.org>"]
 edition = "2018"
 license = "BSD-2-Clause"
+description = "Helper to check stand-alone assembly functions, derived from dav1d"
+homepage = "https://github.com/rust-av/checkasm-rs"
+repository = "https://github.com/rust-av/checkasm-rs"
 
 [dependencies]
 cfg-if = "1"
